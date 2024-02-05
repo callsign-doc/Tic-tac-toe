@@ -2,6 +2,14 @@
 //cell object to be filled inside the gameboard
 //gameController object to control the gameflow
 
+
+
+
+
+// IMPORTANT: THE MAIN REASON FOR THE CREATION OF THIS BRANCH IS TO 
+//SIMPLY THE CODE EVEN MORE, I CAN'T COMPREHEND THE IMPLEMENTATION OF 
+//FACTORY FUNCTION AND MODULES YET
+
 function Gameboard() {
   const rows = 3;
   const columns = 3;
@@ -21,18 +29,13 @@ function Gameboard() {
     board[row][column] = player;
   }
 
-  return { printBoard, markCell };
+  return { board, printBoard, markCell };
 }
 
-function Cell() {
-
-
-
-}
-
+let randomise = () => Math.floor(Math.random() * 3);
 
 
 
 let game = Gameboard();
-game.markCell(1,1,'X');
+game.markCell(randomise(),randomise(),'X');
 game.printBoard();
