@@ -19,7 +19,7 @@ function Gameboard() {
   for (let i = 0; i < rows; i++) {
     board[i] = [];
     for (let j = 0; j< columns; j++) {
-      board[i].push('69');
+      board[i].push(' ');
     }
   }
 
@@ -37,5 +37,33 @@ let randomise = () => Math.floor(Math.random() * 3);
 
 
 let game = Gameboard();
-game.markCell(randomise(),randomise(),'X');
+let markRandomCell = () => game.markCell(randomise(),randomise(),activePlayer.symbol);
+
+let player1 = {
+  name: 'Player One',
+  symbol: 'X'
+}
+let player2 = {
+  name: 'Player Two',
+  symbol: 'O'
+}
+let players = [player1, player2]
+let activePlayer = player1;
+
+let switchTurn = () => {
+  activePlayer = (activePlayer === player1) ? player2 : player1;
+};
+
+//game start with player one
+markRandomCell();
+switchTurn();
+markRandomCell();
+switchTurn();
+markRandomCell();
+switchTurn();
+markRandomCell();
+switchTurn();
+
+
+
 game.printBoard();
