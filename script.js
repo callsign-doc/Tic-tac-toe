@@ -4,8 +4,6 @@
 
 
 
-
-
 // IMPORTANT: THE MAIN REASON FOR THE CREATION OF THIS BRANCH IS TO 
 //SIMPLY THE CODE EVEN MORE, I CAN'T COMPREHEND THE IMPLEMENTATION OF 
 //FACTORY FUNCTION AND MODULES YET
@@ -30,7 +28,23 @@ const Gameboard = (() => {
   }
 
   let randomise = () => Math.floor(Math.random() * 3);
-  let markRandomCell = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
+  let markRandomCell2 = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
+
+  function markRandomCell(activePlayer) {
+    let randomRow = randomise()
+    let randomColumn = randomise()
+
+    //keep randomising till an empty 
+    while (board[randomRow][randomColumn] !== ' ') {
+      randomRow = randomise();
+      randomColumn = randomise();
+    }
+
+    markCell(randomRow, randomColumn, activePlayer.symbol);
+    activePlayer.moves ++;
+    console.log(`active player moves: ${activePlayer.moves}`);
+  }
+
 
   return { board, printBoard, markCell, markRandomCell };
 })();
@@ -40,11 +54,13 @@ function GameController() {
 
   let player1 = {
     name: 'Player One',
-    symbol: 'X'
+    symbol: 'X',
+    moves: 0
   }
   let player2 = {
     name: 'Player Two',
-    symbol: 'O'
+    symbol: 'O',
+    moves: 0
   }
 
   let players = [player1, player2]
@@ -54,6 +70,11 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
   Gameboard.markRandomCell(activePlayer);
   Gameboard.markRandomCell(activePlayer);
   Gameboard.markRandomCell(activePlayer);
