@@ -10,7 +10,7 @@
 //SIMPLY THE CODE EVEN MORE, I CAN'T COMPREHEND THE IMPLEMENTATION OF 
 //FACTORY FUNCTION AND MODULES YET
 
-function Gameboard() {
+const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
   const board = [];
@@ -33,11 +33,10 @@ function Gameboard() {
   let markRandomCell = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
 
   return { board, printBoard, markCell, markRandomCell };
-}
+})();
 
 function GameController() {
   //initialise Gameboard object
-  let gameboard = Gameboard();
 
   let player1 = {
     name: 'Player One',
@@ -55,12 +54,12 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
-  gameboard.markRandomCell(activePlayer);
-  gameboard.markRandomCell(activePlayer);
-  gameboard.markRandomCell(activePlayer);
-  gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markRandomCell(activePlayer);
 
-  gameboard.printBoard();
+  Gameboard.printBoard();
 }
 
 let game = GameController();
