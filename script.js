@@ -29,41 +29,58 @@ function Gameboard() {
     board[row][column] = player;
   }
 
-  return { board, printBoard, markCell };
+  let randomise = () => Math.floor(Math.random() * 3);
+  let markRandomCell = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
+
+  return { board, printBoard, markCell, markRandomCell };
 }
 
-let randomise = () => Math.floor(Math.random() * 3);
+function GameController() {
+  //initialise Gameboard object
+  let gameboard = Gameboard();
 
+  let player1 = {
+    name: 'Player One',
+    symbol: 'X'
+  }
+  let player2 = {
+    name: 'Player Two',
+    symbol: 'O'
+  }
 
+  let players = [player1, player2]
+  let activePlayer = player1;
 
-let game = Gameboard();
-let markRandomCell = () => game.markCell(randomise(),randomise(),activePlayer.symbol);
+  const switchTurn = () => {
+    activePlayer = (activePlayer === player1) ? player2 : player1;
+  };
 
-let player1 = {
-  name: 'Player One',
-  symbol: 'X'
+  gameboard.markRandomCell(activePlayer);
+  gameboard.markRandomCell(activePlayer);
+  gameboard.markRandomCell(activePlayer);
+  gameboard.markRandomCell(activePlayer);
+
+  gameboard.printBoard();
 }
-let player2 = {
-  name: 'Player Two',
-  symbol: 'O'
-}
-let players = [player1, player2]
-let activePlayer = player1;
 
-let switchTurn = () => {
-  activePlayer = (activePlayer === player1) ? player2 : player1;
-};
-
-//game start with player one
-markRandomCell();
-switchTurn();
-markRandomCell();
-switchTurn();
-markRandomCell();
-switchTurn();
-markRandomCell();
-switchTurn();
+let game = GameController();
 
 
 
-game.printBoard();
+
+
+
+
+
+// //game start with player one
+// markRandomCell();
+// switchTurn();
+// markRandomCell();
+// switchTurn();
+// markRandomCell();
+// switchTurn();
+// markRandomCell();
+// switchTurn();
+
+
+
