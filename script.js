@@ -42,15 +42,45 @@ const Gameboard = (() => {
 
     markCell(randomRow, randomColumn, activePlayer.symbol);
     activePlayer.moves ++;
-    console.log(`active player moves: ${activePlayer.moves}`);
+    console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
   }
 
+  function markHorizontalWin(activePlayer) {
+    markCell(0, 0, activePlayer.symbol);
+    markCell(0, 1, activePlayer.symbol);
+    markCell(0, 2, activePlayer.symbol);
 
-  return { board, printBoard, markCell, markRandomCell };
+    activePlayer.moves ++;
+    activePlayer.moves ++;
+    activePlayer.moves ++;
+
+    console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
+  }
+
+  let horizontalWin = false;
+
+
+    let checkHorizontalWin = () => {
+      for (let row = 0; row <= 2; row++) {
+        if (board[row][0] === board[row][1] && board[row][0] === board[row][2]) {
+          return true;
+        }  
+      }
+    }
+
+    let verticalWin = false;
+    let diagonalWin = false;
+
+
+  
+
+
+  return { board, printBoard, markCell, markRandomCell, markHorizontalWin, checkHorizontalWin, horizontalWin };
 })();
 
+
+
 function GameController() {
-  //initialise Gameboard object
 
   let player1 = {
     name: 'Player One',
@@ -70,15 +100,30 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
-  Gameboard.markRandomCell(activePlayer);
+  Gameboard.markHorizontalWin(activePlayer);
+  if (Gameboard.checkHorizontalWin()) {
+    console.log("Player whatever WON by way of HORIZONTAL")
+  }
+
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  
 
   Gameboard.printBoard();
 }
