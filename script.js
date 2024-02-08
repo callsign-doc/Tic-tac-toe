@@ -69,6 +69,18 @@ const Gameboard = (() => {
     console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
   }
 
+  function markDiagonalWin(activePlayer) {
+    markCell(0, 2, activePlayer.symbol);
+    markCell(1, 1, activePlayer.symbol);
+    markCell(2, 0, activePlayer.symbol);
+
+    activePlayer.moves ++;
+    activePlayer.moves ++;
+    activePlayer.moves ++;
+
+    console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
+  }
+
   let checkHorizontalWin = () => {
     for (let row = 0; row <= 2; row++) {
       if (board[row][0] === board[row][1] && board[row][0] === board[row][2]) {
@@ -85,6 +97,13 @@ const Gameboard = (() => {
     }
   }
 
+  let checkDiagonalWin = () => {
+    const case1 = board[0][0] === board[1][1] && board[1][1] === board [2][2];
+    const case2 = board[0][2] === board[1][1] && board[1][1] === board [2][0];
+
+    return case1 || case2;
+  }
+
     let verticalWin = false;
     let diagonalWin = false;
 
@@ -96,8 +115,8 @@ const Gameboard = (() => {
     printBoard,
     markCell,
     markRandomCell,
-    markHorizontalWin, markVerticalWin,
-    checkHorizontalWin, checkVerticalWin };
+    markHorizontalWin, markVerticalWin, markDiagonalWin,
+    checkHorizontalWin, checkVerticalWin, checkDiagonalWin };
 })();
 
 
@@ -122,9 +141,9 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
-  Gameboard.markVerticalWin(activePlayer);
-  if (Gameboard.checkVerticalWin()) {
-    console.log("Player whatever WON by way of VERTICALES")
+  Gameboard.markDiagonalWin(activePlayer);
+  if (Gameboard.checkDiagonalWin()) {
+    console.log("Player whatever WON by way of DiagonaLES")
   }
 
   // Gameboard.markRandomCell(activePlayer);
