@@ -22,9 +22,22 @@ const Gameboard = (() => {
 
     board[row][column] = player;
   }
+  const markCell2 = (player) => {
+    let rowChosen = parseInt(prompt("Select row 0-2"))
+    let columnChosen = parseInt(prompt("Enter column 0-2"))
+
+    while (isNaN(rowChosen) || rowChosen < 0 || rowChosen >= board.length) {
+      rowChosen = parseInt(prompt("Invalid input! Please enter a valid row number:"));
+    }
+    while (isNaN(columnChosen) || columnChosen < 0 || columnChosen >= board.length) {
+      rowChosen = parseInt(prompt("Invalid input! Please enter a valid row number:"));
+    }
+
+    board[row][column] = player;
+  }
+
 
   let randomise = () => Math.floor(Math.random() * 3);
-  let markRandomCell2 = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
 
 
   function markRandomCell(activePlayer) {
@@ -120,7 +133,7 @@ const Gameboard = (() => {
 
   return { board, winner,getWinner,
     printBoard,
-    markCell,
+    markCell, markCell2,
     markRandomCell,
     checkForWin,
     markHorizontalWin, markVerticalWin, markDiagonalWin
