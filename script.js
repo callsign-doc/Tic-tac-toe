@@ -1,17 +1,10 @@
-//gameboard object to store the 3x3 gameboard
-//cell object to be filled inside the gameboard
-//gameController object to control the gameflow
-
-
-
-// IMPORTANT: THE MAIN REASON FOR THE CREATION OF THIS BRANCH IS TO 
-//SIMPLY THE CODE EVEN MORE, I CAN'T COMPREHEND THE IMPLEMENTATION OF 
-//FACTORY FUNCTION AND MODULES YET
+// CURRENT OBJECTIVE: 
 
 const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
   const board = [];
+  let winner;
 
   //create 3x3 board, each square will be filled by a Cell object
   for (let i = 0; i < rows; i++) {
@@ -23,27 +16,34 @@ const Gameboard = (() => {
 
   const printBoard = () => console.log(board);
 
+  const getWinner = () => winner;
+
   const markCell = (row, column, player) => {
+
     board[row][column] = player;
   }
 
   let randomise = () => Math.floor(Math.random() * 3);
   let markRandomCell2 = (activePlayer) => markCell(randomise(),randomise(),activePlayer.symbol);
 
+
   function markRandomCell(activePlayer) {
-    let randomRow = randomise()
-    let randomColumn = randomise()
+    let randomRow;
+    let randomColumn;
+    let cellOccupied;
 
     //keep randomising till an empty 
-    while (board[randomRow][randomColumn] !== ' ') {
+    do {
       randomRow = randomise();
       randomColumn = randomise();
-    }
+      cellOccupied = board[randomRow][randomColumn] !== ' ';
+    } while (cellOccupied);
 
     markCell(randomRow, randomColumn, activePlayer.symbol);
     activePlayer.moves ++;
-    console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
+    console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves} @ ${randomRow}, ${randomColumn}`);
   }
+
 
   function markHorizontalWin(activePlayer) {
     markCell(2, 0, activePlayer.symbol);
@@ -86,6 +86,7 @@ const Gameboard = (() => {
       for (let row = 0; row <= 2; row++) {
         if (board[row][0] === board[row][1] && board[row][0] === board[row][2]) {
           console.log("Win by Horizontal");
+          winner = board[row][0];
           return true;
         }  
       }
@@ -95,6 +96,7 @@ const Gameboard = (() => {
       for (let column = 0; column <= 2; column++) {
         if (board[0][column] === board[1][column] && board[0][column] === board[2][column]) {
           console.log("Win by Vertical");
+          winner = board[0][column];
           return true;
         }  
       }
@@ -106,6 +108,7 @@ const Gameboard = (() => {
   
       if (case1 || case2) {
         console.log("Win by Diagonal")
+        winner = board[0][0];
         return true;
       };
     }
@@ -115,7 +118,7 @@ const Gameboard = (() => {
   
   
 
-  return { board, 
+  return { board, winner,getWinner,
     printBoard,
     markCell,
     markRandomCell,
@@ -127,7 +130,6 @@ const Gameboard = (() => {
 
 
 function GameController() {
-
   let player1 = {
     name: 'Player One',
     symbol: 'X',
@@ -146,31 +148,33 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
-  Gameboard.markVerticalWin(activePlayer);
-  Gameboard.checkForWin();
 
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+  Gameboard.markRandomCell(activePlayer);
+  switchTurn();
+
+  Gameboard.checkForWin();
+  console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
+  console.log(`Winner: User ${Gameboard.winner}`);
 
   Gameboard.printBoard();
 }
+
 
 let game = GameController();
 
