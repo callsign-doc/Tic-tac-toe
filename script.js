@@ -22,6 +22,7 @@ const Gameboard = (() => {
 
     board[row][column] = player;
   }
+
   const markCell2 = (player) => {
     let rowChosen = parseInt(prompt("Select row 0-2"))
     let columnChosen = parseInt(prompt("Enter column 0-2"))
@@ -33,7 +34,7 @@ const Gameboard = (() => {
       rowChosen = parseInt(prompt("Invalid input! Please enter a valid row number:"));
     }
 
-    board[row][column] = player;
+    board[rowChosen][columnChosen] = player.symbol;
   }
 
 
@@ -97,7 +98,7 @@ const Gameboard = (() => {
   function checkForWin() {
     let checkHorizontalWin = () => {
       for (let row = 0; row <= 2; row++) {
-        if (board[row][0] === board[row][1] && board[row][0] === board[row][2]) {
+        if (board[row][0] === board[row][1] && board[row][0] === board[row][2] && board[row][0] !== ' ') {
           console.log("Win by Horizontal");
           winner = board[row][0];
           return true;
@@ -107,7 +108,7 @@ const Gameboard = (() => {
   
     let checkVerticalWin = () => {
       for (let column = 0; column <= 2; column++) {
-        if (board[0][column] === board[1][column] && board[0][column] === board[2][column]) {
+        if (board[0][column] === board[1][column] && board[0][column] === board[2][column] && board[0][column] !== ' ') {
           console.log("Win by Vertical");
           winner = board[0][column];
           return true;
@@ -116,8 +117,8 @@ const Gameboard = (() => {
     }
   
     let checkDiagonalWin = () => {
-      const case1 = board[0][0] === board[1][1] && board[1][1] === board [2][2];
-      const case2 = board[0][2] === board[1][1] && board[1][1] === board [2][0];
+      const case1 = board[0][0] === board[1][1] && board[1][1] === board [2][2] && board[1][1] !== ' ';
+      const case2 = board[0][2] === board[1][1] && board[1][1] === board [2][0] && board[1][1] !== ' ';
   
       if (case1 || case2) {
         console.log("Win by Diagonal")
@@ -161,27 +162,32 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
+  while (!Gameboard.checkForWin()) {
+    Gameboard.markCell2(activePlayer);
+    switchTurn();
+  }
 
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
-  Gameboard.markRandomCell(activePlayer);
-  switchTurn();
 
-  Gameboard.checkForWin();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+  // Gameboard.markRandomCell(activePlayer);
+  // switchTurn();
+
+  // Gameboard.checkForWin();
   console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
   console.log(`Winner: User ${Gameboard.winner}`);
 
