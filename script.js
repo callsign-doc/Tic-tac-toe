@@ -24,7 +24,7 @@ const Gameboard = (() => {
   }
 
   const markCell2 = (player) => {
-    let rowChosen = parseInt(prompt("Select row 0-2"))
+    let rowChosen = parseInt(prompt(`Player ${player.symbol}: Select row 0-2`))
     let columnChosen = parseInt(prompt("Enter column 0-2"))
 
     while (isNaN(rowChosen) || rowChosen < 0 || rowChosen >= board.length) {
@@ -35,6 +35,7 @@ const Gameboard = (() => {
     }
 
     board[rowChosen][columnChosen] = player.symbol;
+    alert(board);
   }
 
 
@@ -94,6 +95,8 @@ const Gameboard = (() => {
 
     console.log(`active player ${activePlayer.symbol} moves: ${activePlayer.moves}`);
   }
+
+
 
   function checkForWin() {
     let checkHorizontalWin = () => {
@@ -158,34 +161,19 @@ function GameController() {
   let players = [player1, player2]
   let activePlayer = player1;
 
+  let isTie = false; 
+
   const switchTurn = () => {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
-  while (!Gameboard.checkForWin()) {
-    Gameboard.markCell2(activePlayer);
-    switchTurn();
-  }
 
-
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
-  // Gameboard.markRandomCell(activePlayer);
-  // switchTurn();
+  //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
+  // while (!Gameboard.checkForWin() && player1.moves < 5) {
+  //   Gameboard.markCell2(activePlayer);
+  //   Gameboard.printBoard();
+  //   switchTurn();
+  // }
 
   // Gameboard.checkForWin();
   console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
@@ -194,6 +182,24 @@ function GameController() {
   Gameboard.printBoard();
 }
 
+const Formatter = (function() {
+  const log = (mesasage) => console.log(`[${Date.now()}] Logger: ${mesasage}`);
+
+  const makeUppercase = (text) => {
+    log("Making uppercase");
+    return text.toUpperCase();
+  }
+
+  const writeToDom = (selector, message) => {
+    document.querySelector(selector).innerHTML = message;
+  }
+
+  return {
+    makeUppercase, writeToDom
+  }
+})();
+
+Formatter.writeToDom('#target', 'Message Alpha');
 
 let game = GameController();
 
