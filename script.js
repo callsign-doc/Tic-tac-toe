@@ -182,7 +182,16 @@ function GameController() {
   Gameboard.printBoard();
 }
 
-const Formatter = (function() {
+
+// DOM MANIPULATION
+const documentMock = (() => ({
+  querySelector: (selector) => ({
+    innerHTML: null,
+  }),
+
+}))
+
+const Formatter = (function(doc) {
   const log = (mesasage) => console.log(`[${Date.now()}] Logger: ${mesasage}`);
 
   const makeUppercase = (text) => {
@@ -191,15 +200,18 @@ const Formatter = (function() {
   }
 
   const writeToDom = (selector, message) => {
-    document.querySelector(selector).innerHTML = message;
+    if (!!doc && "querySelector" in doc) {
+      doc.querySelector(selector).innerHTML = message;
+    }
   }
 
   return {
     makeUppercase, writeToDom
   }
-})();
+})(document || documentMock);
 
 Formatter.writeToDom('#target', 'Message Alpha');
+
 
 let game = GameController();
 
