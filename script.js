@@ -183,6 +183,8 @@ function GameController() {
 }
 
 
+
+
 // DOM MANIPULATION
 const documentMock = (() => ({
   querySelector: (selector) => ({
@@ -193,6 +195,9 @@ const documentMock = (() => ({
 
 const Formatter = (function(doc) {
   const log = (mesasage) => console.log(`[${Date.now()}] Logger: ${mesasage}`);
+  let isDocumenValid = !!doc && "querySelector" in doc;
+
+  const gameContainer = doc.querySelector('.gameContainer');
 
   const makeUppercase = (text) => {
     log("Making uppercase");
@@ -200,17 +205,33 @@ const Formatter = (function(doc) {
   }
 
   const writeToDom = (selector, message) => {
-    if (!!doc && "querySelector" in doc) {
+    if (isDocumenValid) {
       doc.querySelector(selector).innerHTML = message;
     }
   }
 
+  const displayGameboard = (board) => {
+    if (isDocumenValid) {
+      // Loop over each row in the board
+      for (let row = 0; row < board.length; row++) {
+        // Loop over each column in the current row
+        for (let column = 0; column < board[row].length; column++) {
+            // Access the current cell using board[row][column]
+            const cell = board[row][column];
+            // Do something with the cell (e.g., access properties or perform operations)
+            console.log(`Cell at position (${row}, ${column}): ${cell}`);
+        }
+      }
+    }
+  }
+
   return {
-    makeUppercase, writeToDom
+    makeUppercase, writeToDom, displayGameboard
   }
 })(document || documentMock);
 
-Formatter.writeToDom('#target', 'Message Alpha');
+// Formatter.writeToDom('#target', 'Message Alpha');
+Formatter.displayGameboard(Gameboard.board);
 
 
 let game = GameController();
