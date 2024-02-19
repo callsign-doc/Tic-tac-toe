@@ -1,0 +1,15 @@
+.gameContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+}
+
+/* .row {
+    display: grid;
+    grid-template-columns: ();
+} */
+
+.gameContainer * {
+    border: 1px solid black;
+}
+

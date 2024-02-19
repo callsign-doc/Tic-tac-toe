@@ -195,7 +195,7 @@ const documentMock = (() => ({
 
 const Formatter = (function(doc) {
   const log = (mesasage) => console.log(`[${Date.now()}] Logger: ${mesasage}`);
-  let isDocumenValid = !!doc && "querySelector" in doc;
+  let isDocumentValid = !!doc && "querySelector" in doc;
 
   const gameContainer = doc.querySelector('.gameContainer');
 
@@ -205,25 +205,46 @@ const Formatter = (function(doc) {
   }
 
   const writeToDom = (selector, message) => {
-    if (isDocumenValid) {
+    if (isDocumentValid) {
       doc.querySelector(selector).innerHTML = message;
     }
   }
 
   const displayGameboard = (board) => {
-    if (isDocumenValid) {
-      // Loop over each row in the board
-      for (let row = 0; row < board.length; row++) {
-        // Loop over each column in the current row
-        for (let column = 0; column < board[row].length; column++) {
-            // Access the current cell using board[row][column]
-            const cell = board[row][column];
-            // Do something with the cell (e.g., access properties or perform operations)
-            console.log(`Cell at position (${row}, ${column}): ${cell}`);
+    if (isDocumentValid) {
+        for (let row = 0; row < board.length; row++) {
+            // Create a new div element for the row
+            const rowElement = document.createElement('div');
+            rowElement.classList.add('row'); // Add class 'row' to the row element
+
+            // Set the row attribute on the row element
+            rowElement.setAttribute('data-row', row);
+
+            for (let column = 0; column < board[row].length; column++) {
+                const cell = board[row][column];
+
+                // Create a new div element for the grid item (cell)
+                const gridItem = document.createElement('div');
+                gridItem.classList.add('grid-item'); // Optional: Add class 'grid-item' for styling purposes
+
+                // Assign the appropriate row and column attributes
+                gridItem.setAttribute('data-row', row);
+                gridItem.setAttribute('data-column', column);
+
+                // Set the content of the grid item
+                gridItem.textContent = `[${row}, ${column}]`;
+
+                // Append the grid item to the row parent
+                rowElement.appendChild(gridItem);
+            }
+
+            // Append the row element to the gameContainer
+            gameContainer.appendChild(rowElement);
         }
-      }
     }
-  }
+  } 
+
+
 
   return {
     makeUppercase, writeToDom, displayGameboard
