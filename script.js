@@ -20,6 +20,8 @@ const Gameboard = (() => {
     }
   }
 
+  const getBoard = () => board;
+
   const resetBoard = () => {
     board = [];
     createBoard();
@@ -147,7 +149,7 @@ const Gameboard = (() => {
 
   createBoard();
 
-  return { board, winner, getWinner,
+  return { board, getBoard, winner, getWinner,
     printBoard, resetBoard, 
     markCell, markCell2, isCellEmpty,
     markRandomCell,
@@ -190,7 +192,12 @@ const DisplayController = (function(doc) {
     while (gameContainer.firstChild) {
         gameContainer.removeChild(gameContainer.firstChild);
     }
-};
+  };
+
+  const markGameboardUI = (target, row, column) => {
+    let board = Gameboard.getBoard();
+    target.textContent = board[row][column];
+  }
 
   const displayGameboard = (board) => {
     if (isDocumentValid) {
@@ -229,7 +236,7 @@ const DisplayController = (function(doc) {
 
 
   return {
-    makeUppercase, writeToDom, displayGameboard, clearGameboard
+    makeUppercase, writeToDom, displayGameboard, clearGameboard, markGameboardUI
   }
 })(document || documentMock);
 
@@ -266,9 +273,13 @@ const GameController = (function() {
   resetBtn.addEventListener('click', () => {
     console.log("you pressed reset");
     Gameboard.resetBoard();
+
     DisplayController.clearGameboard();
     DisplayController.displayGameboard(Gameboard.board);
+
     gameOver = false;
+    activePlayer = player1;
+    
     Gameboard.printBoard();
   })
 
@@ -287,7 +298,7 @@ const GameController = (function() {
 
       if (emptyCell) {
         Gameboard.markCell(row, column, activePlayer.symbol);
-        target.textContent = Gameboard.board[row][column];
+        DisplayController.markGameboardUI(target, row, column);
 
         Gameboard.printBoard();
         gameOver = Gameboard.checkForWin();
