@@ -232,6 +232,7 @@ function GameController() {
   }
 
   const gameboardUI = document.querySelector('.gameContainer');
+  const resetBtn = document.getElementById('resetBtn');
 
   let players = [player1, player2]
   let activePlayer = player1;
@@ -243,6 +244,9 @@ function GameController() {
     activePlayer = (activePlayer === player1) ? player2 : player1;
   };
 
+  resetBtn.addEventListener('click', () => {
+    console.log("you pressed reset");
+  })
 
 
 

@@ -1,6 +1,7 @@
 /* UNIVERSAL */
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -38,6 +39,26 @@ body {
 
     font-size: 30px;
     font-weight: bold;
+}
+#resetBtnContainer {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 10px;
+    width: 30vw;
+}
+#resetBtn {
+    background-color: #e0436b;
+    color: white;
+
+    width: 100px;
+    height: 40px;
+}
+#resetBtn:hover {
+    background-color: #e64c72;
+}
+#resetBtn:active {
+    background-color: #e63e67;
 }
 
 
