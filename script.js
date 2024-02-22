@@ -219,7 +219,7 @@ const Formatter = (function(doc) {
 
 
 
-function GameController() {
+const GameController = (function() {
   let player1 = {
     name: 'Player One',
     symbol: 'X',
@@ -247,8 +247,6 @@ function GameController() {
   resetBtn.addEventListener('click', () => {
     console.log("you pressed reset");
   })
-
-
 
   // GAME START
   Formatter.displayGameboard(Gameboard.board);
@@ -281,13 +279,10 @@ function GameController() {
       }
     } 
     
-    
     if (gameOver) {
       alert(`Game over, winner: ${Gameboard.getWinner()}`);
     }
   });
-
-  
 
   //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
   // while (!Gameboard.checkForWin() && player1.moves < 5) {
@@ -301,14 +296,14 @@ function GameController() {
   console.log(`Winner: User ${Gameboard.winner}`);
 
   Gameboard.printBoard();
-}
+})();
 
 
 
 
 
 
-let game = GameController();
+// let game = GameController();
 
 
 
