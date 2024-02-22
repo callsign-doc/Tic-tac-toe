@@ -4,6 +4,7 @@ const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
   const board = [];
+  const gameboardUI = document.querySelector('.gameContainer');
   let winner;
 
   //create 3x3 board, each square will be filled by a Cell object
@@ -37,6 +38,8 @@ const Gameboard = (() => {
     board[rowChosen][columnChosen] = player.symbol;
     alert(board);
   }
+
+  // const markCell3 = ()
 
 
   let randomise = () => Math.floor(Math.random() * 3);
@@ -132,6 +135,11 @@ const Gameboard = (() => {
 
     return checkHorizontalWin() || checkVerticalWin() || checkDiagonalWin();
   }
+
+  gameboardUI.addEventListener('click', event => {
+    let target = event.target;
+    target.style.backgroundColor = 'green';
+  });
   
   
 
@@ -168,12 +176,17 @@ function GameController() {
   };
 
 
+
+
+  // GAME START
+  Formatter.displayGameboard(Gameboard.board);
+
   //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
-  // while (!Gameboard.checkForWin() && player1.moves < 5) {
-  //   Gameboard.markCell2(activePlayer);
-  //   Gameboard.printBoard();
-  //   switchTurn();
-  // }
+  while (!Gameboard.checkForWin() && player1.moves < 5) {
+    Gameboard.markCell2(activePlayer);
+    Gameboard.printBoard();
+    switchTurn();
+  }
 
   // Gameboard.checkForWin();
   console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
@@ -251,8 +264,6 @@ const Formatter = (function(doc) {
   }
 })(document || documentMock);
 
-// Formatter.writeToDom('#target', 'Message Alpha');
-Formatter.displayGameboard(Gameboard.board);
 
 
 let game = GameController();

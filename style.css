@@ -1,4 +1,13 @@
 /* UNIVERSAL */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+}
+
+
 * {
     border: 1px solid blue;
 }
@@ -13,22 +22,26 @@
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 2px;
 
-    width: 200px;
-    height: 200px;
+    width: 30vw;
+    height: 30vw;
+
 }
 .row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
 
-
-
-
-
-
 .grid-item {
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 30px;
+    font-weight: bold;
 }
+
+
+
 .grid-item:hover {
     background-color: orange;
 }
