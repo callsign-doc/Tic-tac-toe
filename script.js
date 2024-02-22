@@ -254,15 +254,21 @@ function GameController() {
     // Access the data-row and data-column attributes
     let row = parseInt(target.getAttribute('data-row'));
     let column = parseInt(target.getAttribute('data-column'));
+    let emptyCell = Gameboard.board[row][column] === ' ';
 
-    Gameboard.markCell(row, column, activePlayer.symbol);
-    target.textContent = Gameboard.board[row][column];
-    Gameboard.printBoard();
-    switchTurn();
+    if (emptyCell) {
+      Gameboard.markCell(row, column, activePlayer.symbol);
+      target.textContent = Gameboard.board[row][column];
+      Gameboard.printBoard();
+      switchTurn();
 
-    // Put row and column information inside variables
-    console.log('Row:', row);
-    console.log('Column:', column);
+      // Put row and column information inside variables
+      console.log('Row:', row);
+      console.log('Column:', column);
+    } else {
+      console.log("This cell is occuppied!")
+    }
+    
   });
 
   //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
