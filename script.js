@@ -2,15 +2,27 @@
 const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
-  const board = [];
+  let board = [];
   let winner;
 
+  const isCellEmpty = (row, column) => {
+    let cellContent = board[row][column];
+    return cellContent === ' ';
+  }
+
   //create 3x3 board, each square will be filled by a Cell object
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j< columns; j++) {
-      board[i].push(' ');
+  const createBoard = () => {
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j< columns; j++) {
+        board[i].push(' ');
+      }
     }
+  }
+
+  const resetBoard = () => {
+    board = [];
+    createBoard();
   }
 
   const printBoard = () => console.log(board);
@@ -133,10 +145,11 @@ const Gameboard = (() => {
     return checkHorizontalWin() || checkVerticalWin() || checkDiagonalWin();
   }
 
+  createBoard();
 
-  return { board, winner,getWinner,
-    printBoard,
-    markCell, markCell2,
+  return { board, winner, getWinner,
+    printBoard, resetBoard, 
+    markCell, markCell2, isCellEmpty,
     markRandomCell,
     checkForWin,
     markHorizontalWin, markVerticalWin, markDiagonalWin
@@ -156,7 +169,7 @@ const documentMock = (() => ({
 
 }))
 
-const Formatter = (function(doc) {
+const DisplayController = (function(doc) {
   const log = (mesasage) => console.log(`[${Date.now()}] Logger: ${mesasage}`);
   let isDocumentValid = !!doc && "querySelector" in doc;
 
@@ -172,6 +185,12 @@ const Formatter = (function(doc) {
       doc.querySelector(selector).innerHTML = message;
     }
   }
+
+  const clearGameboard = () => {
+    while (gameContainer.firstChild) {
+        gameContainer.removeChild(gameContainer.firstChild);
+    }
+};
 
   const displayGameboard = (board) => {
     if (isDocumentValid) {
@@ -210,7 +229,7 @@ const Formatter = (function(doc) {
 
 
   return {
-    makeUppercase, writeToDom, displayGameboard
+    makeUppercase, writeToDom, displayGameboard, clearGameboard
   }
 })(document || documentMock);
 
@@ -246,10 +265,15 @@ const GameController = (function() {
 
   resetBtn.addEventListener('click', () => {
     console.log("you pressed reset");
+    Gameboard.resetBoard();
+    DisplayController.clearGameboard();
+    DisplayController.displayGameboard(Gameboard.board);
+    gameOver = false;
+    Gameboard.printBoard();
   })
 
   // GAME START
-  Formatter.displayGameboard(Gameboard.board);
+  DisplayController.displayGameboard(Gameboard.board);
 
   
   gameboardUI.addEventListener('click', event => {
@@ -259,7 +283,7 @@ const GameController = (function() {
       // Access the data-row and data-column attributes
       let row = parseInt(target.getAttribute('data-row'));
       let column = parseInt(target.getAttribute('data-column'));
-      let emptyCell = Gameboard.board[row][column] === ' ';
+      let emptyCell = Gameboard.isCellEmpty(row, column);
 
       if (emptyCell) {
         Gameboard.markCell(row, column, activePlayer.symbol);
@@ -276,11 +300,14 @@ const GameController = (function() {
 
       } else {
         console.log("This cell is occuppied!")
+        console.log(`Gameboard.board[row][column] = ${Gameboard.board[row][column]} ${emptyCell}`)
+        Gameboard.printBoard();
       }
     } 
     
     if (gameOver) {
       alert(`Game over, winner: ${Gameboard.getWinner()}`);
+      
     }
   });
 
