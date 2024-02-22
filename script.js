@@ -1,10 +1,8 @@
 // CURRENT OBJECTIVE: 
-
 const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
   const board = [];
-  const gameboardUI = document.querySelector('.gameContainer');
   let winner;
 
   //create 3x3 board, each square will be filled by a Cell object
@@ -20,7 +18,6 @@ const Gameboard = (() => {
   const getWinner = () => winner;
 
   const markCell = (row, column, player) => {
-
     board[row][column] = player;
   }
 
@@ -136,12 +133,6 @@ const Gameboard = (() => {
     return checkHorizontalWin() || checkVerticalWin() || checkDiagonalWin();
   }
 
-  gameboardUI.addEventListener('click', event => {
-    let target = event.target;
-    target.style.backgroundColor = 'green';
-  });
-  
-  
 
   return { board, winner,getWinner,
     printBoard,
@@ -153,47 +144,6 @@ const Gameboard = (() => {
 })();
 
 
-
-function GameController() {
-  let player1 = {
-    name: 'Player One',
-    symbol: 'X',
-    moves: 0
-  }
-  let player2 = {
-    name: 'Player Two',
-    symbol: 'O',
-    moves: 0
-  }
-
-  let players = [player1, player2]
-  let activePlayer = player1;
-
-  let isTie = false; 
-
-  const switchTurn = () => {
-    activePlayer = (activePlayer === player1) ? player2 : player1;
-  };
-
-
-
-
-  // GAME START
-  Formatter.displayGameboard(Gameboard.board);
-
-  //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
-  while (!Gameboard.checkForWin() && player1.moves < 5) {
-    Gameboard.markCell2(activePlayer);
-    Gameboard.printBoard();
-    switchTurn();
-  }
-
-  // Gameboard.checkForWin();
-  console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
-  console.log(`Winner: User ${Gameboard.winner}`);
-
-  Gameboard.printBoard();
-}
 
 
 
@@ -263,6 +213,74 @@ const Formatter = (function(doc) {
     makeUppercase, writeToDom, displayGameboard
   }
 })(document || documentMock);
+
+
+
+
+
+
+function GameController() {
+  let player1 = {
+    name: 'Player One',
+    symbol: 'X',
+    moves: 0
+  }
+  let player2 = {
+    name: 'Player Two',
+    symbol: 'O',
+    moves: 0
+  }
+
+  const gameboardUI = document.querySelector('.gameContainer');
+
+  let players = [player1, player2]
+  let activePlayer = player1;
+
+  let isTie = false; 
+
+  const switchTurn = () => {
+    activePlayer = (activePlayer === player1) ? player2 : player1;
+  };
+
+
+
+
+  // GAME START
+  Formatter.displayGameboard(Gameboard.board);
+
+  gameboardUI.addEventListener('click', event => {
+    let target = event.target;
+
+    // Access the data-row and data-column attributes
+    let row = parseInt(target.getAttribute('data-row'));
+    let column = parseInt(target.getAttribute('data-column'));
+
+    Gameboard.markCell(row, column, activePlayer.symbol);
+    target.textContent = Gameboard.board[row][column];
+    Gameboard.printBoard();
+    switchTurn();
+
+    // Put row and column information inside variables
+    console.log('Row:', row);
+    console.log('Column:', column);
+  });
+
+  //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
+  // while (!Gameboard.checkForWin() && player1.moves < 5) {
+  //   Gameboard.markCell2(activePlayer);
+  //   Gameboard.printBoard();
+  //   switchTurn();
+  // }
+
+  // Gameboard.checkForWin();
+  console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
+  console.log(`Winner: User ${Gameboard.winner}`);
+
+  Gameboard.printBoard();
+}
+
+
+
 
 
 
