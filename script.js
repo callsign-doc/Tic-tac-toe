@@ -236,6 +236,7 @@ function GameController() {
   let players = [player1, player2]
   let activePlayer = player1;
 
+  let gameOver = false;
   let isTie = false; 
 
   const switchTurn = () => {
@@ -248,28 +249,41 @@ function GameController() {
   // GAME START
   Formatter.displayGameboard(Gameboard.board);
 
+  
   gameboardUI.addEventListener('click', event => {
-    let target = event.target;
+    if (!gameOver) {
+      let target = event.target;
 
-    // Access the data-row and data-column attributes
-    let row = parseInt(target.getAttribute('data-row'));
-    let column = parseInt(target.getAttribute('data-column'));
-    let emptyCell = Gameboard.board[row][column] === ' ';
+      // Access the data-row and data-column attributes
+      let row = parseInt(target.getAttribute('data-row'));
+      let column = parseInt(target.getAttribute('data-column'));
+      let emptyCell = Gameboard.board[row][column] === ' ';
 
-    if (emptyCell) {
-      Gameboard.markCell(row, column, activePlayer.symbol);
-      target.textContent = Gameboard.board[row][column];
-      Gameboard.printBoard();
-      switchTurn();
+      if (emptyCell) {
+        Gameboard.markCell(row, column, activePlayer.symbol);
+        target.textContent = Gameboard.board[row][column];
 
-      // Put row and column information inside variables
-      console.log('Row:', row);
-      console.log('Column:', column);
-    } else {
-      console.log("This cell is occuppied!")
-    }
+        Gameboard.printBoard();
+        gameOver = Gameboard.checkForWin();
+        console.log(`gameOver: ${gameOver}`);
+        switchTurn();
+
+        // Put row and column information inside variables
+        console.log('Row:', row);
+        console.log('Column:', column);
+
+      } else {
+        console.log("This cell is occuppied!")
+      }
+    } 
     
+    
+    if (gameOver) {
+      alert(`Game over, winner: ${Gameboard.getWinner()}`);
+    }
   });
+
+  
 
   //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
   // while (!Gameboard.checkForWin() && player1.moves < 5) {
