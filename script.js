@@ -2,6 +2,7 @@
 const Gameboard = (() => {
   const rows = 3;
   const columns = 3;
+  let lastPlayer = 'X';
   let board = [];
   let winner;
 
@@ -31,8 +32,15 @@ const Gameboard = (() => {
 
   const getWinner = () => winner;
 
+  const getLastPlayer = () => lastPlayer;
+  const changeLastPlayer = (activePlayer) => {
+    lastPlayer = activePlayer.symbol;
+  }
+
   const markCell = (row, column, player) => {
     board[row][column] = player;
+    lastPlayer = player;
+    console.log(`Last player = ${lastPlayer}`);
   }
 
   const markCell2 = (player) => {
@@ -149,7 +157,8 @@ const Gameboard = (() => {
 
   createBoard();
 
-  return { board, getBoard, winner, getWinner,
+  return { board, getBoard, winner, getWinner, 
+    getLastPlayer, changeLastPlayer,
     printBoard, resetBoard, 
     markCell, markCell2, isCellEmpty,
     markRandomCell,
@@ -177,6 +186,49 @@ const DisplayController = (function(doc) {
 
   const gameContainer = doc.querySelector('.gameContainer');
 
+  const updateGridItemClass = (event) => {
+    let symbol = Gameboard.getLastPlayer();
+    let target = event.target;
+    
+    if (target.classList.contains('grid-item')) {
+      console.log(`yobro, the symbol is ${symbol}`);
+        if (symbol === 'X') {
+            target.classList.add('grid-item-x');
+        } else if (symbol === 'O') {
+            target.classList.add('grid-item-o');
+        }
+    }
+  }
+
+  gameContainer.addEventListener('mouseover', (event) => {
+    updateGridItemClass(event);
+  });
+
+ 
+
+  // gameContainer.addEventListener('mouseover', (event, activePlayer) => {
+  //   let symbol = activePlayer.symbol;
+  //   let target = event.target;
+
+  //   if (target.classList.contains('grid-item')) {
+  //     if (symbol === 'X') {
+  //       target.classList.add('grid-item-x');
+  //     } else if (symbol === 'O') {
+  //         target.classList.add('grid-item-o');
+  //     }
+  //   }
+  // });
+
+  gameContainer.addEventListener('mouseout', (event) => {
+      let target = event.target;
+      if (target.classList.contains('grid-item')) {
+          target.style.backgroundColor = ''; // Revert to original color (empty string)
+          target.classList.remove('grid-item-x', 'grid-item-o');
+      }
+  });
+
+  
+
   const makeUppercase = (text) => {
     log("Making uppercase");
     return text.toUpperCase();
@@ -193,6 +245,7 @@ const DisplayController = (function(doc) {
         gameContainer.removeChild(gameContainer.firstChild);
     }
   };
+
 
   const markGameboardUI = (target, row, column) => {
     let board = Gameboard.getBoard();
@@ -221,7 +274,8 @@ const DisplayController = (function(doc) {
                 gridItem.setAttribute('data-column', column);
 
                 // Set the content of the grid item
-                gridItem.textContent = `[${row}, ${column}]`;
+                // gridItem.textContent = `[${row}, ${column}]`;
+                gridItem.textContent = ' '
 
                 // Append the grid item to the row parent
                 rowElement.appendChild(gridItem);
@@ -236,7 +290,9 @@ const DisplayController = (function(doc) {
 
 
   return {
-    makeUppercase, writeToDom, displayGameboard, clearGameboard, markGameboardUI
+    makeUppercase, writeToDom, 
+    displayGameboard, clearGameboard, markGameboardUI,
+    updateGridItemClass
   }
 })(document || documentMock);
 
@@ -262,12 +318,14 @@ const GameController = (function() {
 
   let players = [player1, player2]
   let activePlayer = player1;
+  const getActivePlayer = () => activePlayer;
 
   let gameOver = false;
   let isTie = false; 
 
   const switchTurn = () => {
     activePlayer = (activePlayer === player1) ? player2 : player1;
+    Gameboard.changeLastPlayer(activePlayer);
   };
 
   resetBtn.addEventListener('click', () => {
@@ -279,9 +337,14 @@ const GameController = (function() {
 
     gameOver = false;
     activePlayer = player1;
-    
+    Gameboard.changeLastPlayer(activePlayer);
+
     Gameboard.printBoard();
   })
+
+  
+
+
 
   // GAME START
   DisplayController.displayGameboard(Gameboard.board);
@@ -305,6 +368,7 @@ const GameController = (function() {
         console.log(`gameOver: ${gameOver}`);
         switchTurn();
 
+
         // Put row and column information inside variables
         console.log('Row:', row);
         console.log('Column:', column);
@@ -319,6 +383,10 @@ const GameController = (function() {
     if (gameOver) {
       alert(`Game over, winner: ${Gameboard.getWinner()}`);
       
+    }
+
+    return {
+      getActivePlayer
     }
   });
 
