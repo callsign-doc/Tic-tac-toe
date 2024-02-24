@@ -40,16 +40,35 @@ body {
     font-size: 30px;
     font-weight: bold;
 }
-.grid-item-x:hover {
-    background-color: #e0436b;
-    color: #ffd6de;
+
+.grid-item-x {
+    background-color: #db3760;
+    color: #ffffff;
+    font-size: 30px;
+}.grid-item-x:active {
+    background-color: #db3760;
+    color: #ffffff;
     font-size: 30px;
 }
-.grid-item-o:hover {
-    background-color: #1467e3;
+/* .grid-item-x:hover {
+    background-color: #df5e7e;
+    color: #eedcdc;
+} */
+.grid-item-o {
+    background-color: #085ee0;
+    color: #f5f7ff;
+    font-size: 30px;
+}
+.grid-item-o:active{
+    background-color: #085ee0;
+    color: #f5f7ff;
+    font-size: 30px;
+}
+/* .grid-item-o:hover {
+    background-color: #3075dc;
     color: #e3e7fc;
-    font-size: 30px;
-}
+} */
+
 #resetBtnContainer {
     display: flex;
     justify-content: flex-end;

@@ -200,7 +200,17 @@ const DisplayController = (function(doc) {
             target.classList.add('grid-item-o');
         }
         target.textContent = symbol;
+
+        if (target.classList.contains('grid-item-x')) {
+          target.style.backgroundColor = '#df5e7e';
+          target.style.color = '#eedcdc';
+        } else if (target.classList.contains('grid-item-o')) {
+            target.style.backgroundColor = '#3075dc';
+            target.style.color = '#e3e7fc';
+        }
       }
+
+      
       
     }
   }
@@ -213,12 +223,16 @@ const DisplayController = (function(doc) {
   gameContainer.addEventListener('mouseout', (event) => {
       let target = event.target;
       if (target.classList.contains('grid-item')) {
-        target.style.backgroundColor = ''; // Revert to original color (empty string)
-        target.classList.remove('grid-item-x', 'grid-item-o');
 
         if (target.getAttribute('marked') !== 'true') {
+          target.style.backgroundColor = ''; // Revert to original color (empty string)
+          target.classList.remove('grid-item-x', 'grid-item-o');
+
           target.textContent = ' ';
-        } 
+        } else {
+          target.style.backgroundColor = ''; // Revert to original background color
+          target.style.color = ''; // Revert to original text color
+        }
         
       }
   });
