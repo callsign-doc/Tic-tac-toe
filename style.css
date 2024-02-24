@@ -44,7 +44,7 @@ body {
     background-color: #e0436b;
 }
 .grid-item-o:hover {
-    background-color: blue;
+    background-color: #1467e3;
 }
 #resetBtnContainer {
     display: flex;

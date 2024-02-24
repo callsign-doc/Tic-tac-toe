@@ -192,11 +192,14 @@ const DisplayController = (function(doc) {
     
     if (target.classList.contains('grid-item')) {
       console.log(`yobro, the symbol is ${symbol}`);
-        if (symbol === 'X') {
-            target.classList.add('grid-item-x');
-        } else if (symbol === 'O') {
-            target.classList.add('grid-item-o');
-        }
+      
+      if (symbol === 'X') {
+          target.classList.add('grid-item-x');
+      } else if (symbol === 'O') {
+          target.classList.add('grid-item-o');
+      }
+
+      target.textContent = symbol;
     }
   }
 
@@ -204,26 +207,17 @@ const DisplayController = (function(doc) {
     updateGridItemClass(event);
   });
 
- 
-
-  // gameContainer.addEventListener('mouseover', (event, activePlayer) => {
-  //   let symbol = activePlayer.symbol;
-  //   let target = event.target;
-
-  //   if (target.classList.contains('grid-item')) {
-  //     if (symbol === 'X') {
-  //       target.classList.add('grid-item-x');
-  //     } else if (symbol === 'O') {
-  //         target.classList.add('grid-item-o');
-  //     }
-  //   }
-  // });
 
   gameContainer.addEventListener('mouseout', (event) => {
       let target = event.target;
       if (target.classList.contains('grid-item')) {
-          target.style.backgroundColor = ''; // Revert to original color (empty string)
-          target.classList.remove('grid-item-x', 'grid-item-o');
+        target.style.backgroundColor = ''; // Revert to original color (empty string)
+        target.classList.remove('grid-item-x', 'grid-item-o');
+
+        if (target.getAttribute('marked') !== 'true') {
+          target.textContent = ' ';
+        } 
+        
       }
   });
 
@@ -353,6 +347,7 @@ const GameController = (function() {
   gameboardUI.addEventListener('click', event => {
     if (!gameOver) {
       let target = event.target;
+      target.setAttribute('marked', 'true');
 
       // Access the data-row and data-column attributes
       let row = parseInt(target.getAttribute('data-row'));
