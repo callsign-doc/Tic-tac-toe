@@ -199,7 +199,10 @@ const DisplayController = (function(doc) {
           target.classList.add('grid-item-o');
       }
 
-      target.textContent = symbol;
+      if (target.getAttribute('marked') !== 'true') {
+        target.textContent = symbol;
+      }
+      
     }
   }
 
