@@ -192,14 +192,13 @@ const DisplayController = (function(doc) {
     
     if (target.classList.contains('grid-item')) {
       console.log(`yobro, the symbol is ${symbol}`);
-      
-      if (symbol === 'X') {
-          target.classList.add('grid-item-x');
-      } else if (symbol === 'O') {
-          target.classList.add('grid-item-o');
-      }
 
       if (target.getAttribute('marked') !== 'true') {
+        if (symbol === 'X') {
+          target.classList.add('grid-item-x');
+        } else if (symbol === 'O') {
+            target.classList.add('grid-item-o');
+        }
         target.textContent = symbol;
       }
       

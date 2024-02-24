@@ -41,11 +41,13 @@ body {
     font-weight: bold;
 }
 .grid-item-x:hover {
-    color: #e0436b;
+    background-color: #e0436b;
+    color: #ffd6de;
     font-size: 30px;
 }
 .grid-item-o:hover {
-    color: #1467e3;
+    background-color: #1467e3;
+    color: #e3e7fc;
     font-size: 30px;
 }
 #resetBtnContainer {
