@@ -237,6 +237,14 @@ const DisplayController = (function(doc) {
       }
   });
 
+
+  const updatePlayerNameDisplay = (player1, player2) => {
+    const p1DisplayName = doc.getElementById('player1Name');
+    const p2DisplayName = doc.getElementById('player2Name');
+
+    p1DisplayName.textContent = player1.name;
+    p2DisplayName.textContent = player2.name;
+  }
   
 
   const makeUppercase = (text) => {
@@ -302,7 +310,7 @@ const DisplayController = (function(doc) {
   return {
     makeUppercase, writeToDom, 
     displayGameboard, clearGameboard, markGameboardUI,
-    updateGridItemClass
+    updateGridItemClass, updatePlayerNameDisplay
   }
 })(document || documentMock);
 
@@ -313,12 +321,12 @@ const DisplayController = (function(doc) {
 
 const GameController = (function() {
   let player1 = {
-    name: 'Player One',
+    name: 'Player 一',
     symbol: 'X',
     moves: 0
   }
   let player2 = {
-    name: 'Player Two',
+    name: 'Player 二',
     symbol: 'O',
     moves: 0
   }
@@ -358,6 +366,7 @@ const GameController = (function() {
 
   // GAME START
   DisplayController.displayGameboard(Gameboard.board);
+  DisplayController.updatePlayerNameDisplay(player1, player2);
 
   
   gameboardUI.addEventListener('click', event => {

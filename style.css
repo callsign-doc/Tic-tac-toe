@@ -31,9 +31,15 @@ body {
     padding: 5px;
 }
 .playerSymbol {
-    font-size: 25px;
+    font-size: 45px;
     font-weight: bold;
     text-align: center;
+}
+#player1Symbol {
+    color: #db3760;
+}
+#player2Symbol {
+    color: #085ee0;
 }
 
 
