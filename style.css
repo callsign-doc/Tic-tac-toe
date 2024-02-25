@@ -12,11 +12,28 @@ body {
 
 
 * {
-    /* border: 1px solid blue; */
+    border: 1px solid blue;
+}
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+
 }
 
 .gameContainer * {
     border: 1px solid black;
+}
+
+.player-display {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 5px;
+}
+.playerSymbol {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
 }
 
 
@@ -50,11 +67,11 @@ body {
 .grid-item-x {
     background-color: #db3760;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 60px;
 }.grid-item-x:active {
     background-color: #db3760;
     color: #ffffff;
-    font-size: 30px;
+    /* font-size: 30px; */
 }
 /* .grid-item-x:hover {
     background-color: #df5e7e;
@@ -63,12 +80,12 @@ body {
 .grid-item-o {
     background-color: #085ee0;
     color: #f5f7ff;
-    font-size: 30px;
+    font-size: 60px;
 }
 .grid-item-o:active{
     background-color: #085ee0;
     color: #f5f7ff;
-    font-size: 30px;
+    /* font-size: 30px; */
 }
 /* .grid-item-o:hover {
     background-color: #3075dc;
@@ -80,7 +97,7 @@ body {
     justify-content: flex-end;
 
     margin-top: 10px;
-    width: 30vw;
+    width: 99%;
 }
 #resetBtn {
     background-color: #e0436b;
@@ -90,10 +107,10 @@ body {
     height: 40px;
 }
 #resetBtn:hover {
-    background-color: #e64c72;
+    background-color: #e20c41;
 }
 #resetBtn:active {
-    background-color: #e63e67;
+    background-color: #d90439;
 }
 
 
