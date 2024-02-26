@@ -11,6 +11,11 @@ const Gameboard = (() => {
     return cellContent === ' ';
   }
 
+  const isBoardFull = () => {
+    return !board.some(row => row.some(cell => cell === ' '));
+  }
+
+
   //create 3x3 board, each square will be filled by a Cell object
   const createBoard = () => {
     for (let i = 0; i < rows; i++) {
@@ -30,7 +35,8 @@ const Gameboard = (() => {
 
   const printBoard = () => console.log(board);
 
-  const getWinner = () => winner;
+  const getWinner = () => winner === undefined ? 'TIE' : winner;
+
 
   const getLastPlayer = () => lastPlayer;
   const changeLastPlayer = (activePlayer) => {
@@ -159,7 +165,7 @@ const Gameboard = (() => {
 
   return { board, getBoard, winner, getWinner, 
     getLastPlayer, changeLastPlayer,
-    printBoard, resetBoard, 
+    printBoard, resetBoard, isBoardFull,
     markCell, markCell2, isCellEmpty,
     markRandomCell,
     checkForWin,
@@ -390,7 +396,9 @@ const GameController = (function() {
         DisplayController.markGameboardUI(target, row, column);
 
         Gameboard.printBoard();
-        gameOver = Gameboard.checkForWin();
+        isTie = Gameboard.isBoardFull();
+        gameOver = Gameboard.checkForWin() || isTie;
+
         console.log(`gameOver: ${gameOver}`);
         switchTurn();
 
