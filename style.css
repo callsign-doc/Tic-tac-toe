@@ -12,7 +12,7 @@ body {
 
 
 * {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
 }
 .mainContainer {
     display: flex;
@@ -28,12 +28,16 @@ body {
     display: flex;
     justify-content: space-between;
 
-    padding: 5px;
+    padding: 30px;
+    padding-bottom: 5px;
 }
 .playerSymbol {
     font-size: 45px;
     font-weight: bold;
     text-align: center;
+}
+.playerContainer {
+    /* border: 1px solid black; */
 }
 #player1Symbol {
     color: #db3760;

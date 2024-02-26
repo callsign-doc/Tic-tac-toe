@@ -49,24 +49,6 @@ const Gameboard = (() => {
     console.log(`Last player = ${lastPlayer}`);
   }
 
-  const markCell2 = (player) => {
-    let rowChosen = parseInt(prompt(`Player ${player.symbol}: Select row 0-2`))
-    let columnChosen = parseInt(prompt("Enter column 0-2"))
-
-    while (isNaN(rowChosen) || rowChosen < 0 || rowChosen >= board.length) {
-      rowChosen = parseInt(prompt("Invalid input! Please enter a valid row number:"));
-    }
-    while (isNaN(columnChosen) || columnChosen < 0 || columnChosen >= board.length) {
-      rowChosen = parseInt(prompt("Invalid input! Please enter a valid row number:"));
-    }
-
-    board[rowChosen][columnChosen] = player.symbol;
-    alert(board);
-  }
-
-  // const markCell3 = ()
-
-
   let randomise = () => Math.floor(Math.random() * 3);
 
 
@@ -153,7 +135,7 @@ const Gameboard = (() => {
   
       if (case1 || case2) {
         console.log("Win by Diagonal")
-        winner = board[0][0];
+        winner = board[1][1];
         return true;
       };
     }
@@ -166,10 +148,8 @@ const Gameboard = (() => {
   return { board, getBoard, winner, getWinner, 
     getLastPlayer, changeLastPlayer,
     printBoard, resetBoard, isBoardFull,
-    markCell, markCell2, isCellEmpty,
-    markRandomCell,
-    checkForWin,
-    markHorizontalWin, markVerticalWin, markDiagonalWin
+    markCell, isCellEmpty,
+    checkForWin
    };
 })();
 
@@ -216,32 +196,28 @@ const DisplayController = (function(doc) {
         }
       }
 
-      
-      
     }
   }
-
   gameContainer.addEventListener('mouseover', (event) => {
     updateGridItemClass(event);
   });
 
 
-  gameContainer.addEventListener('mouseout', (event) => {
-      let target = event.target;
-      if (target.classList.contains('grid-item')) {
-
+  const handleMouseOut = (event) => {
+    let target = event.target;
+    if (target.classList.contains('grid-item')) {
         if (target.getAttribute('marked') !== 'true') {
-          target.style.backgroundColor = ''; // Revert to original color (empty string)
-          target.classList.remove('grid-item-x', 'grid-item-o');
-
-          target.textContent = ' ';
+            target.style.backgroundColor = ''; // Revert to original color (empty string)
+            target.classList.remove('grid-item-x', 'grid-item-o');
+            target.textContent = ' '; // Reset the content
         } else {
-          target.style.backgroundColor = ''; // Revert to original background color
-          target.style.color = ''; // Revert to original text color
+            target.style.backgroundColor = ''; // Revert to original background color
+            target.style.color = ''; // Revert to original text color
         }
-        
-      }
-  });
+    }
+  };
+  gameContainer.addEventListener('mouseout', handleMouseOut);
+
 
 
   const updatePlayerNameDisplay = (player1, player2) => {
@@ -251,18 +227,7 @@ const DisplayController = (function(doc) {
     p1DisplayName.textContent = player1.name;
     p2DisplayName.textContent = player2.name;
   }
-  
 
-  const makeUppercase = (text) => {
-    log("Making uppercase");
-    return text.toUpperCase();
-  }
-
-  const writeToDom = (selector, message) => {
-    if (isDocumentValid) {
-      doc.querySelector(selector).innerHTML = message;
-    }
-  }
 
   const clearGameboard = () => {
     while (gameContainer.firstChild) {
@@ -314,7 +279,6 @@ const DisplayController = (function(doc) {
 
 
   return {
-    makeUppercase, writeToDom, 
     displayGameboard, clearGameboard, markGameboardUI,
     updateGridItemClass, updatePlayerNameDisplay
   }
