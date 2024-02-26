@@ -320,13 +320,19 @@ const DisplayController = (function(doc) {
 
 
 const GameController = (function() {
+  const getCustomPlayerName = (symbol) => {
+    let name = prompt(`Player ${symbol}: Enter Name`);
+    return name;
+
+  };
+
   let player1 = {
-    name: 'Player 一',
+    name: getCustomPlayerName('X'),
     symbol: 'X',
     moves: 0
   }
   let player2 = {
-    name: 'Player 二',
+    name: getCustomPlayerName('O'),
     symbol: 'O',
     moves: 0
   }
