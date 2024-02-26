@@ -241,7 +241,7 @@ const DisplayController = (function(doc) {
     target.textContent = board[row][column];
   }
 
-  const displayGameboard = (board) => {
+  const renderGameboardUI = (board) => {
     if (isDocumentValid) {
         for (let row = 0; row < board.length; row++) {
             // Create a new div element for the row
@@ -279,7 +279,7 @@ const DisplayController = (function(doc) {
 
 
   return {
-    displayGameboard, clearGameboard, markGameboardUI,
+    displayGameboard: renderGameboardUI, clearGameboard, markGameboardUI,
     updateGridItemClass, updatePlayerNameDisplay
   }
 })(document || documentMock);
@@ -293,7 +293,6 @@ const GameController = (function() {
   const getCustomPlayerName = (symbol) => {
     let name = prompt(`Player ${symbol}: Enter Name`);
     return name;
-
   };
 
   let player1 = {
@@ -310,19 +309,32 @@ const GameController = (function() {
   const gameboardUI = document.querySelector('.gameContainer');
   const resetBtn = document.getElementById('resetBtn');
 
-  let players = [player1, player2]
   let activePlayer = player1;
   const getActivePlayer = () => activePlayer;
 
   let gameOver = false;
   let isTie = false; 
 
+  function generateGameOverMessage() {
+    let winner = Gameboard.getWinner();
+      if (isTie) {
+        alert(`TIE: Between Special Grade Sorcerer ${player1.name} & Special Grade Curse ${player2.name}`);
+      } else {
+        if (winner === 'X') {
+          alert(`Game over, winner, The strongest sorcerer of today: ${player1.name}`);
+        } else {
+          alert(`Game over, winner, The strongest sorcerer in history: ${player2.name}`);
+        }
+
+      }
+  }
+
   const switchTurn = () => {
     activePlayer = (activePlayer === player1) ? player2 : player1;
     Gameboard.changeLastPlayer(activePlayer);
   };
 
-  resetBtn.addEventListener('click', () => {
+  const resetGame = () => {
     console.log("you pressed reset");
     Gameboard.resetBoard();
 
@@ -334,9 +346,48 @@ const GameController = (function() {
     Gameboard.changeLastPlayer(activePlayer);
 
     Gameboard.printBoard();
-  })
+  };
+
+
+  const handleCellClick = (event) => {
+    if (!gameOver) {
+        let target = event.target;
+        target.setAttribute('marked', 'true');
+
+        // Access the data-row and data-column attributes
+        let row = parseInt(target.getAttribute('data-row'));
+        let column = parseInt(target.getAttribute('data-column'));
+        let emptyCell = Gameboard.isCellEmpty(row, column);
+
+        if (emptyCell) {
+            Gameboard.markCell(row, column, activePlayer.symbol);
+            DisplayController.markGameboardUI(target, row, column);
+
+            Gameboard.printBoard();
+            isTie = Gameboard.isBoardFull();
+            gameOver = Gameboard.checkForWin() || isTie;
+
+            console.log(`gameOver: ${gameOver}`);
+            switchTurn();
+
+            // Put row and column information inside variables
+            console.log('Row:', row);
+            console.log('Column:', column);
+
+        } else {
+            console.log("This cell is occupied!")
+            console.log(`Gameboard.board[row][column] = ${Gameboard.board[row][column]} ${emptyCell}`)
+            Gameboard.printBoard();
+        }
+    } 
+    
+    if (gameOver) {
+      generateGameOverMessage();
+    }
+  };
 
   
+
 
 
 
@@ -344,62 +395,10 @@ const GameController = (function() {
   DisplayController.displayGameboard(Gameboard.board);
   DisplayController.updatePlayerNameDisplay(player1, player2);
 
-  
-  gameboardUI.addEventListener('click', event => {
-    if (!gameOver) {
-      let target = event.target;
-      target.setAttribute('marked', 'true');
+  gameboardUI.addEventListener('click', handleCellClick);
 
-      // Access the data-row and data-column attributes
-      let row = parseInt(target.getAttribute('data-row'));
-      let column = parseInt(target.getAttribute('data-column'));
-      let emptyCell = Gameboard.isCellEmpty(row, column);
+  resetBtn.addEventListener('click', resetGame);
 
-      if (emptyCell) {
-        Gameboard.markCell(row, column, activePlayer.symbol);
-        DisplayController.markGameboardUI(target, row, column);
-
-        Gameboard.printBoard();
-        isTie = Gameboard.isBoardFull();
-        gameOver = Gameboard.checkForWin() || isTie;
-
-        console.log(`gameOver: ${gameOver}`);
-        switchTurn();
-
-
-        // Put row and column information inside variables
-        console.log('Row:', row);
-        console.log('Column:', column);
-
-      } else {
-        console.log("This cell is occuppied!")
-        console.log(`Gameboard.board[row][column] = ${Gameboard.board[row][column]} ${emptyCell}`)
-        Gameboard.printBoard();
-      }
-    } 
-    
-    if (gameOver) {
-      alert(`Game over, winner: ${Gameboard.getWinner()}`);
-      
-    }
-
-    return {
-      getActivePlayer
-    }
-  });
-
-  //PROBLEM HERE, GAME DOESN'T END AT 9 filled cells, instead it continues until there is a winner
-  // while (!Gameboard.checkForWin() && player1.moves < 5) {
-  //   Gameboard.markCell2(activePlayer);
-  //   Gameboard.printBoard();
-  //   switchTurn();
-  // }
-
-  // Gameboard.checkForWin();
-  console.log(`Wiener: Wielder of ${Gameboard.getWinner()}`);
-  console.log(`Winner: User ${Gameboard.winner}`);
-
-  Gameboard.printBoard();
 })();
 
 
@@ -407,24 +406,7 @@ const GameController = (function() {
 
 
 
-// let game = GameController();
 
-
-
-
-
-
-
-
-// //game start with player one
-// markRandomCell();
-// switchTurn();
-// markRandomCell();
-// switchTurn();
-// markRandomCell();
-// switchTurn();
-// markRandomCell();
-// switchTurn();
 
 
 
